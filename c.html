@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    a {
+      color: black;
+      font-weight: 800;
+    }
+    button {
+      padding: 1vw 1vw;
+      background-color: transparent;
+      border: none;
+      border: 3px solid black;
+      color: crimson;
+    }
+  </style>
+</head>
+<body>
+  <input id="inps" type="search">
+  <br>
+  <br>
+  <button id="btns" onclick="btng()">CLICK TO CHECK PROFILE</button>
+  <br>
+  <br>
+  <a id="ach" target="_blank" href=""></a>
+  <script>
+    var fe = document.getElementById("btns");
+    var gg = document.getElementById("ach");
+
+    function btng() {
+      var hd = document.getElementById("inps").value;    
+      if (hd == "") {
+        gg.innerHTML = ""
+      } else {
+        gg.href = "https://github.com/" + hd
+        gg.innerHTML = "Check github of " + hd
+      }
+    }
+  </script>
+</body>
+</html>

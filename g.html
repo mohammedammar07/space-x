@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT Chat</title>
+    <style>
+        /* Your CSS styles here */
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="messages"></div>
+        <div id="input-container">
+            <input type="text" id="message-input" placeholder="Type your message...">
+            <button id="send-button" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const messagesContainer = document.getElementById('messages');
+        const messageInput = document.getElementById('message-input');
+
+        function sendMessage() {
+            // Get the user's message from the input field
+            const userMessage = messageInput.value;
+
+            // Append the user's message to the chat window
+            appendMessage('You', userMessage);
+
+            // Make an API call to ChatGPT (replace 'YOUR_API_KEY' with your actual API key)
+            const apiKey = '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'; // Replace with your actual OpenAI API key
+            const apiUrl = 'https://api.openai.com/v1/engines/davinci-codex/completions';
+
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    prompt: userMessage,
+                    max_tokens: 150
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Extract the ChatGPT response from the API data
+                const chatGptResponse = data.choices[0].text.trim();
+
+                // Append the ChatGPT response to the chat window
+                appendMessage('ChatGPT', chatGptResponse);
+            })
+            .catch(error => {
+                // Handle errors, such as API request failures
+                console.error('Error:', error);
+
+                // Append an error message to the chat window
+                appendMessage('ChatGPT', 'An error occurred while processing your request.');
+            });
+
+            // Clear the input field after sending the message
+            messageInput.value = '';
+        }
+
+        function appendMessage(user, message) {
+            const messageElement = document.createElement('div');
+            messageElement.innerHTML = `<strong>${user}:</strong> ${message}`;
+            messagesContainer.appendChild(messageElement);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+    </script>
+</body>
+</html>
